@@ -1,4 +1,4 @@
-package multicast
+package isis
 
 type QueueElem struct {
 	Msg        string

@@ -1,4 +1,4 @@
-package multicast
+package isis
 
 import (
 	"container/heap"
