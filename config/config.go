@@ -1,6 +1,8 @@
 package config
 
-type Config struct {
-	NodeId          string
+type NodeConfig struct {
+	Id              string
+	Addr            string
+	Port            int
 	StorageFilename string
 }

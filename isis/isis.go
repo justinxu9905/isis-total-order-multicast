@@ -39,11 +39,11 @@ type Isis struct {
 	queueLock     sync.RWMutex
 }
 
-func NewIsis(config config.Config) *Isis {
+func NewIsis(config config.NodeConfig) *Isis {
 	s := storage.NewFileStorage(config.StorageFilename)
 	return &Isis{
-		peers:         nil,
-		id:            config.NodeId,
+		peers:         map[string]*rpc.MulticastServiceClient{},
+		id:            config.Id,
 		counter:       0,
 		counterLock:   sync.Mutex{},
 		lock:          sync.Mutex{},
@@ -54,6 +54,21 @@ func NewIsis(config config.Config) *Isis {
 		holdBackQueue: HoldBackQueue{},
 		holdBackMap:   map[string]*QueueElem{},
 		queueLock:     sync.RWMutex{},
+	}
+}
+
+func (is *Isis) AddPeer(nodeId string, nodeCli *rpc.MulticastServiceClient) {
+	is.lock.Lock()
+	is.peers[nodeId] = nodeCli
+	is.lock.Unlock()
+}
+
+func (is *Isis) RunDelTask() {
+	for {
+		nodeId := <-is.delChan
+		is.lock.Lock()
+		delete(is.peers, nodeId)
+		is.lock.Unlock()
 	}
 }
 
