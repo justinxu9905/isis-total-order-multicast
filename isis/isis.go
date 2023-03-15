@@ -15,44 +15,44 @@ import (
 )
 
 type Isis struct {
-	peers   map[string]*rpc.MulticastServiceClient
-	id        string
+	peers map[string]*rpc.MulticastServiceClient
+	id    string
 
 	// global isis mgr lock
 	lock sync.Mutex
 
 	// chan for the peer deletion task
-	delChan      chan string
+	delChan chan string
 
 	// msg store
-	storage       storage.Storage
+	storage storage.Storage
 
 	// for the algo
-	counter       int64
-	counterLock   sync.Mutex
-	proposedSeq   int64
-	proposeLock   sync.Mutex
+	counter     int64
+	counterLock sync.Mutex
+	proposedSeq int64
+	proposeLock sync.Mutex
 
 	// hold back queue structure
-	holdBackQueue       HoldBackQueue
-	holdBackMap         map[string]*QueueElem
+	holdBackQueue HoldBackQueue
+	holdBackMap   map[string]*QueueElem
 	queueLock     sync.RWMutex
 }
 
 func NewIsis(config config.Config) *Isis {
 	s := storage.NewFileStorage(config.StorageFilename)
 	return &Isis{
-		peers:   nil,
-		id:        config.NodeId,
+		peers:         nil,
+		id:            config.NodeId,
 		counter:       0,
 		counterLock:   sync.Mutex{},
-		lock: sync.Mutex{},
-		delChan:      make(chan string, 10),
+		lock:          sync.Mutex{},
+		delChan:       make(chan string, 10),
 		storage:       s,
 		proposedSeq:   0,
 		proposeLock:   sync.Mutex{},
-		holdBackQueue:       HoldBackQueue{},
-		holdBackMap:         map[string]*QueueElem{},
+		holdBackQueue: HoldBackQueue{},
+		holdBackMap:   map[string]*QueueElem{},
 		queueLock:     sync.RWMutex{},
 	}
 }

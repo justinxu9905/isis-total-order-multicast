@@ -1,7 +1,7 @@
 package isis
 
 type QueueElem struct {
-	Msg        string
+	Msg       string
 	MsgId     int64
 	Sender    string
 	Proposer  string

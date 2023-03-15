@@ -1,6 +1,6 @@
 package config
 
 type Config struct {
-	NodeId string
+	NodeId          string
 	StorageFilename string
 }

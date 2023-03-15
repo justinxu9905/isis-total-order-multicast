@@ -30,4 +30,3 @@ func (s *FileStorage) Apply(msg string) (res bool) {
 
 	return true
 }
-
