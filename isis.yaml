@@ -1,0 +1,16 @@
+isis-replication-factor: 3
+isis-0: {
+  ip: "127.0.0.1",
+  port: "1110",
+  filename: "isis-0.log"
+}
+isis-1: {
+  ip: "127.0.0.1",
+  port: "1111",
+  filename: "isis-1.log"
+}
+isis-2: {
+  ip: "127.0.0.1",
+  port: "1112",
+  filename: "isis-2.log"
+}

@@ -40,21 +40,21 @@ func TestThreeNodes(t *testing.T) {
 
 	s3 := server.NewServer(c3)
 
-	s1.Start()
-	s2.Start()
-	s3.Start()
+	go s1.Start()
+	go s2.Start()
+	go s3.Start()
 
-	s1.AddPeer(c1)
+	// s1.AddPeer(c1)
 	s1.AddPeer(c2)
 	s1.AddPeer(c3)
 
 	s2.AddPeer(c1)
-	s2.AddPeer(c2)
+	// s2.AddPeer(c2)
 	s2.AddPeer(c3)
 
 	s3.AddPeer(c1)
 	s3.AddPeer(c2)
-	s3.AddPeer(c3)
+	// s3.AddPeer(c3)
 
 	wg := &sync.WaitGroup{}
 	for i := 0; i < 1000; i++ {

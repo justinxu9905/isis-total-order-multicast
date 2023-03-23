@@ -6,7 +6,7 @@ import (
 	"isis-total-order-multicast/config"
 	"isis-total-order-multicast/gen-go/multicast/rpc"
 	"isis-total-order-multicast/storage"
-	"log"
+	log "isis-total-order-multicast/logger"
 	"sort"
 	"strconv"
 	"sync"
@@ -161,7 +161,8 @@ func (is *Isis) Deliver(msgId, seq int64, sender, proposer string) {
 	elemKey := sender + ":" + strconv.Itoa(int(msgId))
 	elem, ok := is.holdBackMap[elemKey]
 	if !ok {
-		panic(is.holdBackMap)
+		log.Errorf("Failed to deliver due to holdback map")
+		return
 	}
 	elem.Delivered = true
 	elem.Seq = seq
@@ -170,6 +171,7 @@ func (is *Isis) Deliver(msgId, seq int64, sender, proposer string) {
 	for cur, ok := is.holdBackQueue.Top(); ok && cur.(*QueueElem).Delivered; cur, ok = is.holdBackQueue.Top() {
 		elem := heap.Pop(&is.holdBackQueue).(*QueueElem)
 		_ = is.storage.Apply(elem.Msg)
+		log.Infof("Deliver message: %v", elem.Msg)
 	}
 	is.queueLock.Unlock()
 }
